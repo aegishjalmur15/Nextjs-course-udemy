@@ -23,7 +23,7 @@ function EventsSearch(props){
                     Year
                 </label>
                 <select id="year" ref={yearInputRef}>
-                    <options value='2021'>2021</options>
+                    <option value='2021'>2021</option>
                     <option  value='2022'>2022</option>
                 </select>
             </div>
