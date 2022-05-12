@@ -32,7 +32,7 @@ function EventsSearch(props){
                     Month
                 </label>
                 <select id="month" ref={monthInputRef}>
-                    <options value='1'>January</options>
+                    <option value='1'>January</option>
                     <option  value='2'>February</option>
                     <option  value='3'>March</option>
                     <option  value='4'>April</option>
