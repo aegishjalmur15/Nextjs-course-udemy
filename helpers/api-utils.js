@@ -17,10 +17,15 @@ export async function getEventById(id)
   return allEvents.filter(event => event.id === id)[0]
 }
 
-export async function getFilteredEvents(dateFilter){
-  const {year, month} = dateFilter;
-
-  const allEvents = await getAllEvents();
+export async function getFilteredEvents(){
+  const {year, month} = arguments[0];
+  let allEvents;
+  if(arguments.length ===1){
+    allEvents = await getAllEvents();
+  }
+  else if(arguments.length ===2){
+    allEvents = arguments[1]; 
+  }
   let filteredEvents = allEvents.filter(event=>{
     const eventDate = new Date(event.date);
     return eventDate.getFullYear() === year && eventDate.getMonth() === month -1
@@ -28,6 +33,7 @@ export async function getFilteredEvents(dateFilter){
 
   return filteredEvents;
 }
+
 
 export function formatArrayEvents(data){
     const dataArray = [];
