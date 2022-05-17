@@ -4,6 +4,7 @@ import EventSummary from '../../components/event-detail/event-summary';
 import EventLogistic from '../../components/event-detail/event-logistics';
 import EventContent from '../../components/event-detail/event-content';
 import ErrorAlert from '../../components/ui/error-alert';
+import Comments from  '../../components/input/comments';
 
 function EventsDetailPage(props)
 {
@@ -21,6 +22,7 @@ function EventsDetailPage(props)
         <EventContent>
             <p>{selectedEvent.description}</p>
         </EventContent>
+        <Comments eventId={selectedEvent.id}/>
     </Fragment>
     );
 }

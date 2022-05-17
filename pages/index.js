@@ -1,6 +1,6 @@
 import { getFeaturedEvents } from '../helpers/api-utils'
 import EventList from '../components/events/event-list';
-
+import NewsLetterRegistration from '../components/input/newsletter-registration';
 
 function HomePage(props)
 {
@@ -8,6 +8,7 @@ function HomePage(props)
     const featuredEvents = props.featuredEvents;
 
     return <div>
+        <NewsLetterRegistration />
         <EventList items={featuredEvents}/>
     </div>
 }
