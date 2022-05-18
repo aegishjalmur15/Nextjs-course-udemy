@@ -1,12 +1,38 @@
+import { useRef } from 'react';
+import { useState } from 'react';
 import classes from './newsletter-registration.module.css';
 
 function NewsletterRegistration() {
+
+  const email = useRef()
+  const [warningText, setWarningText] = useState("");
+
   function registrationHandler(event) {
     event.preventDefault();
+    setWarningText("");
+    if(email.current.value){
+      const body = { email: email.current.value }
 
-    // fetch user input (state or refs)
-    // optional: validate input
-    // send valid data to API
+      fetch('/api/newsLetter',{
+      method: 'POST',
+      body: JSON.stringify(body),
+      headers:{
+        'Content-Type':'Application/json'
+      }
+    }).then(res=>{
+      if(res.status === 409){
+        setWarningText("Email Already Exists");
+      }
+      else{
+        setWarningText("Email Registered Successfuly!");
+      }
+    })
+    return;
+    }
+    else{
+      setWarningText("Invalid Email Address!");
+    }
+    
   }
 
   return (
@@ -14,7 +40,7 @@ function NewsletterRegistration() {
       <h2>Sign up to stay updated!</h2>
       <form onSubmit={registrationHandler}>
         <div className={classes.control}>
-          <input
+          <input ref={email}
             type='email'
             id='email'
             placeholder='Your email'
@@ -23,6 +49,7 @@ function NewsletterRegistration() {
           <button>Register</button>
         </div>
       </form>
+      {warningText? <p>{warningText}</p> : null}
     </section>
   );
 }
