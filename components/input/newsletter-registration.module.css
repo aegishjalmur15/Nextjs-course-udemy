@@ -41,3 +41,10 @@
 .control input {
   flex: 1;
 }
+
+.success{
+  color: #02afa1;
+}
+.error{
+  color: crimson;
+}

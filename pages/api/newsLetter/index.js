@@ -1,33 +1,27 @@
-import fs from 'fs/promises';
-import path from 'path';
+import { connectDatabase, insertDocument } from '../../../helpers/db-utils';
+async function handler(req, res) {
+  if (req.method === "POST") {
+    const email = req.body.email;
+    
 
-async function handler(req,res){
-    if(req.method === 'POST'){
-        const email = req.body.email;
-        const emailsPath = path.join(__dirname, "..","..","..","..","data","emails.json")
+    const client = await connectDatabase();
 
-        const file = await fs.readFile(emailsPath);
+    
+    try{
+        await insertDocument(client,'emails',{ email: email });
 
-        const emails = JSON.parse(file);
-        let emailAlreadyRegistered= false
-        for(let i =0; i< emails.length; i++){
-            if(emails[i].email === email){
-                emailAlreadyRegistered = true;
-                break;
-            }
+        res.status(200).json();
+    }catch(err){    
+        if(err.code === 11000){
+
+          res.status(409).json()
         }
-
-        if(emailAlreadyRegistered){
-            return res.status(409).json({email:'email already exists'});
+        else{
+          res.status(500).json()
         }
-
-        emails.push({email:email});
-
-        await fs.writeFile(emailsPath,JSON.stringify(emails));
-        
-
-        return   res.status(200).json({response:'ok'});
     }
+    client.close();
+  }
 }
 
 export default handler;

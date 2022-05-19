@@ -5,7 +5,7 @@ import classes from './newsletter-registration.module.css';
 function NewsletterRegistration() {
 
   const email = useRef()
-  const [warningText, setWarningText] = useState("");
+  const [warningText, setWarningText] = useState({});
 
   function registrationHandler(event) {
     event.preventDefault();
@@ -21,16 +21,16 @@ function NewsletterRegistration() {
       }
     }).then(res=>{
       if(res.status === 409){
-        setWarningText("Email Already Exists");
+        setWarningText({text:"Email Already Exists", success:0});
       }
       else{
-        setWarningText("Email Registered Successfuly!");
+        setWarningText({text:"Email Registered Successfuly!", success:1});
       }
     })
     return;
     }
     else{
-      setWarningText("Invalid Email Address!");
+      setWarningText({text:"Invalid Email Address!", success:0});
     }
     
   }
@@ -49,9 +49,17 @@ function NewsletterRegistration() {
           <button>Register</button>
         </div>
       </form>
-      {warningText? <p>{warningText}</p> : null}
+      {warningText.text? InfoText(warningText) : null}
     </section>
   );
+}
+
+function InfoText(props){
+  return (
+    <>
+    {props.success? <p className={classes.success}>{props.text}</p>: <p className={classes.error}>{props.text}</p>  }
+    </>  
+  )
 }
 
 export default NewsletterRegistration;

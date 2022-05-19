@@ -1,22 +1,33 @@
-import fs from 'fs/promises';
-import path from 'path';
+import { connectDatabase, getAllDocuments, insertDocument} from '../../../helpers/db-utils';
 async function handler(req,res){
     if(req.method === 'POST'){
         const {email, name,text } = req.body;
         const eventId = req.query.eventId;
-        const commentsPath = path.join(process.cwd.toString(),"..","data","comments.json")
-
-        const file = await fs.readFile(commentsPath);
         
-        const comments = JSON.parse(file);
+        const newComment ={
+            eventId,
+            email,
+            name,
+            text,
+        }
+        const client = await connectDatabase();
 
-        comments.push({eventId, email, name, text});
-
-        await fs.writeFile(commentsPath,JSON.stringify(comments));
+        await insertDocument(client,'comments',newComment);
 
         return res.status(200);
-    
     }
+    else if(req.method === "GET"){
+        const eventId = req.query.eventId;
+
+        const client = await connectDatabase();
+        
+
+        const commentsForRequestedEvent = (await getAllDocuments(client,'comments'))
+        .filter(com=> com.eventId === eventId);
+
+        return res.status(200).json(commentsForRequestedEvent);
+    }
+
 }
 
 export default handler;
