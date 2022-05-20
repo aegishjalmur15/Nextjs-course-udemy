@@ -10,14 +10,14 @@ async function handler(req, res) {
     try{
         await insertDocument(client,'emails',{ email: email });
 
-        res.status(200).json();
+        res.status(200).json({message:"Success!"});
     }catch(err){    
         if(err.code === 11000){
 
-          res.status(409).json()
+          res.status(409).json({message:"Email Already Exists!"})
         }
         else{
-          res.status(500).json()
+          res.status(500).json({message:"Server Error!"})
         }
     }
     client.close();

@@ -14,7 +14,7 @@ async function handler(req,res){
 
         await insertDocument(client,'comments',newComment);
 
-        return res.status(200);
+        return res.status(200).json({message:"success"});
     }
     else if(req.method === "GET"){
         const eventId = req.query.eventId;
